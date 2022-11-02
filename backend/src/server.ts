@@ -10,12 +10,28 @@ async function start() {
   const fastify = Fastify({ logger: true });
   await fastify.register(cors, { origin: true }); // trocar o valor de origin pelo domínio do frontend
 
+  // Route: count created users
+  fastify.get("/users/count", async () => {
+    const count = await prisma.user.count();
+
+    return { count };
+  });
+
+  // Route: count created guesses
+  fastify.get("/guesses/count", async () => {
+    const count = await prisma.guess.count();
+
+    return { count };
+  });
+
+  // Route: count created pools
   fastify.get("/pools/count", async () => {
     const count = await prisma.pool.count();
 
     return { count };
   });
 
+  // Route: create a pool
   fastify.post("/pools", async (request, reply) => {
     // Validations
     const createPoolBody = z.object({
