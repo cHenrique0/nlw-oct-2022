@@ -1,58 +1,24 @@
-import { PrismaClient } from "@prisma/client";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { z } from "zod";
-import ShortUniqueId from "short-unique-id";
 
-const prisma = new PrismaClient({ log: ["query"] });
+import { pollRoutes } from "./routes/poll";
+import { userRoutes } from "./routes/user";
+import { guessRoutes } from "./routes/guess";
+import { matchRoutes } from "./routes/match";
+import { authRoutes } from "./routes/auth";
 
 async function start() {
   const fastify = Fastify({ logger: true });
+
+  // cors
   await fastify.register(cors, { origin: true }); // trocar o valor de origin pelo domínio do frontend
 
-  // Route: count created users
-  fastify.get("/users/count", async () => {
-    const count = await prisma.user.count();
-
-    return { count };
-  });
-
-  // Route: count created guesses
-  fastify.get("/guesses/count", async () => {
-    const count = await prisma.guess.count();
-
-    return { count };
-  });
-
-  // Route: count created pools
-  fastify.get("/pools/count", async () => {
-    const count = await prisma.pool.count();
-
-    return { count };
-  });
-
-  // Route: create a pool
-  fastify.post("/pools", async (request, reply) => {
-    // Validations
-    const createPoolBody = z.object({
-      title: z.string(),
-    });
-    const { title } = createPoolBody.parse(request.body);
-
-    // Creating the code with 6 chars
-    const generate = new ShortUniqueId({ length: 6 });
-    const code = String(generate()).toUpperCase();
-
-    // Creating the pool
-    await prisma.pool.create({
-      data: {
-        title,
-        code,
-      },
-    });
-
-    return reply.status(201).send({ code });
-  });
+  // Adding the routes
+  await fastify.register(authRoutes);
+  await fastify.register(pollRoutes);
+  await fastify.register(userRoutes);
+  await fastify.register(guessRoutes);
+  await fastify.register(matchRoutes);
 
   await fastify.listen({ port: 3333, host: "0.0.0.0" }); // configurar host para funcionar no android
 }
