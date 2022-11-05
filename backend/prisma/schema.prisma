@@ -70,4 +70,6 @@ model Guess {
   // Relations
   match       Match       @relation(fields: [matchId], references: [id])
   participant Participant @relation(fields: [participantId], references: [id])
+
+  @@unique([participantId, matchId])
 }

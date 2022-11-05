@@ -59,6 +59,13 @@ async function main() {
       },
     },
   });
+  await prisma.match.create({
+    data: {
+      date: "2022-11-07T12:00:00.138Z",
+      firstTeamCountryIsoCode: "DE",
+      secondTeamCountryIsoCode: "BR",
+    },
+  });
 }
 
 main();
