@@ -59,7 +59,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
 
   // Route: participate in a poll
   fastify.post(
-    "/polls/:id/join",
+    "/polls/join",
     { onRequest: [authenticate] },
     async (request, reply) => {
       // Poll code validation
