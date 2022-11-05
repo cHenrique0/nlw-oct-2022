@@ -1,5 +1,7 @@
+require("dotenv").config();
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import jwt from "@fastify/jwt";
 
 import { pollRoutes } from "./routes/poll";
 import { userRoutes } from "./routes/user";
@@ -12,6 +14,11 @@ async function start() {
 
   // cors
   await fastify.register(cors, { origin: true }); // trocar o valor de origin pelo domínio do frontend
+
+  // jwt token
+  await fastify.register(jwt, {
+    secret: process.env.JWT_SECRET as string,
+  });
 
   // Adding the routes
   await fastify.register(authRoutes);
