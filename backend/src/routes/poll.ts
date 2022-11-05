@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { prisma } from "../lib/prisma";
 import ShortUniqueId from "short-unique-id";
-import { z } from "zod";
+import { string, z } from "zod";
 import { authenticate } from "../plugins/authenticate";
 
 export async function pollRoutes(fastify: FastifyInstance) {
@@ -159,6 +159,54 @@ export async function pollRoutes(fastify: FastifyInstance) {
       });
 
       return { polls };
+    }
+  );
+
+  // Route: poll details
+  fastify.get(
+    "/polls/:id",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const getPollParams = z.object({
+        id: z.string(),
+      });
+
+      const { id } = getPollParams.parse(request.params);
+
+      const poll = await prisma.poll.findUnique({
+        where: { id },
+        include: {
+          // Count of users participating in this poll
+          _count: {
+            select: {
+              participants: true,
+            },
+          },
+          // Getting the user id of 4 participants
+          participants: {
+            select: {
+              id: true,
+
+              // Getting user's pic
+              user: {
+                select: {
+                  avatarUrl: true,
+                },
+              },
+            },
+            take: 4,
+          },
+          // Getting poll owner id and name
+          owner: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      return { poll };
     }
   );
 }
