@@ -112,4 +112,53 @@ export async function pollRoutes(fastify: FastifyInstance) {
       return reply.status(201).send();
     }
   );
+
+  // Route: user's polls
+  fastify.get(
+    "/polls",
+    { onRequest: [authenticate] },
+    async (request, reply) => {
+      const polls = await prisma.poll.findMany({
+        where: {
+          participants: {
+            // Getting polls where some userId is equal to logged user id
+            some: {
+              userId: request.user.sub,
+            },
+          },
+        },
+        include: {
+          // Count of users participating in this poll
+          _count: {
+            select: {
+              participants: true,
+            },
+          },
+          // Getting the user id of 4 participants
+          participants: {
+            select: {
+              id: true,
+
+              // Getting user's pic
+              user: {
+                select: {
+                  avatarUrl: true,
+                },
+              },
+            },
+            take: 4,
+          },
+          // Getting poll owner id and name
+          owner: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      return { polls };
+    }
+  );
 }
