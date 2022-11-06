@@ -13,7 +13,7 @@ interface GuessProps {
   secondTeamPoints: number;
 }
 
-export interface GameProps {
+export interface MatchProps {
   id: string;
   firstTeamCountryCode: string;
   secondTeamCountryCode: string;
@@ -21,13 +21,13 @@ export interface GameProps {
 }
 
 interface Props {
-  data: GameProps;
+  data: MatchProps;
   onGuessConfirm: () => void;
   setFirstTeamPoints: (value: string) => void;
   setSecondTeamPoints: (value: string) => void;
 }
 
-export function Game({
+export function Match({
   data,
   setFirstTeamPoints,
   setSecondTeamPoints,
@@ -47,7 +47,7 @@ export function Game({
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {getName(data.firstTeamCountryCode)} vs.{" "}
+        {getName(data.firstTeamCountryCode)} x{" "}
         {getName(data.secondTeamCountryCode)}
       </Text>
 
