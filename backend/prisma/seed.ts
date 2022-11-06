@@ -8,7 +8,7 @@ async function main() {
     data: {
       name: "John Doe",
       email: "john.doe@gmail.com",
-      avatarUrl: "",
+      avatarUrl: "https://github.com/cHenrique0.png",
     },
   });
 
@@ -32,20 +32,20 @@ async function main() {
   await prisma.match.create({
     data: {
       date: "2022-11-02T12:00:00.138Z",
-      firstTeamCountryIsoCode: "DE",
-      secondTeamCountryIsoCode: "BR",
+      homeTeamCountryIsoCode: "DE",
+      awayTeamCountryIsoCode: "BR",
     },
   });
   await prisma.match.create({
     data: {
       date: "2022-11-03T16:00:00.138Z",
-      firstTeamCountryIsoCode: "BR",
-      secondTeamCountryIsoCode: "AR",
+      homeTeamCountryIsoCode: "BR",
+      awayTeamCountryIsoCode: "AR",
 
       guesses: {
         create: {
-          firstTeamPoints: 3,
-          secondTeamPoints: 1,
+          homeTeamGoals: 3,
+          awayTeamGoals: 1,
 
           participant: {
             connect: {
@@ -62,8 +62,8 @@ async function main() {
   await prisma.match.create({
     data: {
       date: "2022-11-07T12:00:00.138Z",
-      firstTeamCountryIsoCode: "DE",
-      secondTeamCountryIsoCode: "BR",
+      homeTeamCountryIsoCode: "US",
+      awayTeamCountryIsoCode: "GB",
     },
   });
 }
