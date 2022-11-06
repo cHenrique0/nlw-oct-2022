@@ -86,7 +86,7 @@ export async function pollRoutes(fastify: FastifyInstance) {
 
       if (poll.participants.length > 0)
         return reply.status(400).send({
-          message: `${request.user.name}, you already join this poll.`,
+          message: "You already join this poll.",
         });
 
       // Delete this after implementing login with google on the web frontend
