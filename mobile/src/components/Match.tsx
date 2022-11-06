@@ -1,6 +1,7 @@
 import { Button, HStack, Text, useTheme, VStack } from "native-base";
 import { X, Check } from "phosphor-react-native";
 import { getName } from "country-list";
+import dayjs from "dayjs";
 
 import { Team } from "./Team";
 
@@ -15,8 +16,9 @@ interface GuessProps {
 
 export interface MatchProps {
   id: string;
-  firstTeamCountryCode: string;
-  secondTeamCountryCode: string;
+  date: string;
+  firstTeamCountryIsoCode: string;
+  secondTeamCountryIsoCode: string;
   guess: null | GuessProps;
 }
 
@@ -35,6 +37,8 @@ export function Match({
 }: Props) {
   const { colors, sizes } = useTheme();
 
+  const when = dayjs(data.date).format("DD/MM/YYYY [às] HH:mm");
+
   return (
     <VStack
       w="full"
@@ -47,22 +51,17 @@ export function Match({
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {getName(data.firstTeamCountryCode)} x{" "}
-        {getName(data.secondTeamCountryCode)}
+        {getName(data.firstTeamCountryIsoCode)} vs.{" "}
+        {getName(data.secondTeamCountryIsoCode)}
       </Text>
 
       <Text color="gray.200" fontSize="xs">
-        22 de Novembro de 2022 às 16:00h
+        {when}
       </Text>
 
-      <HStack
-        mt={4}
-        w="full"
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <HStack mt={4} w="full" justifyContent="center" alignItems="center">
         <Team
-          code={data.firstTeamCountryCode}
+          code={data.firstTeamCountryIsoCode}
           position="right"
           onChangeText={setFirstTeamPoints}
         />
@@ -70,7 +69,7 @@ export function Match({
         <X color={colors.gray[300]} size={sizes[6]} />
 
         <Team
-          code={data.secondTeamCountryCode}
+          code={data.secondTeamCountryIsoCode}
           position="left"
           onChangeText={setSecondTeamPoints}
         />
