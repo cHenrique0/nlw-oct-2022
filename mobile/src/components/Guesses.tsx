@@ -3,14 +3,16 @@ import { useToast, FlatList } from "native-base";
 
 import { api } from "../services/api";
 
-import { Match, MatchProps } from "../components/Match";
 import { Loading } from "./Loading";
+import { EmptyMyPollList } from "./EmptyMyPollList";
+import { Match, MatchProps } from "../components/Match";
 
 interface Props {
   pollId: string;
+  code: string;
 }
 
-export function Guesses({ pollId }: Props) {
+export function Guesses({ pollId, code }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [matches, setMatches] = useState<MatchProps[]>([]);
   const [firstTeamPoints, setFirstTeamPoints] = useState("");
@@ -90,6 +92,7 @@ export function Guesses({ pollId }: Props) {
         />
       )}
       _contentContainerStyle={{ pb: 10 }}
+      ListEmptyComponent={() => <EmptyMyPollList code={code} />}
     />
   );
 }
