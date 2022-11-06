@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Share } from "react-native";
 import { HStack, useToast, VStack } from "native-base";
 import { useRoute } from "@react-navigation/native";
 
@@ -50,6 +51,12 @@ export function PollDetails() {
     }
   }
 
+  async function handleCodeShare() {
+    await Share.share({
+      message: pollDetails.code,
+    });
+  }
+
   useEffect(() => {
     fetchPollDetails();
   }, [id]);
@@ -58,7 +65,12 @@ export function PollDetails() {
 
   return (
     <VStack flex={1} bgColor="gray.900">
-      <Header title={pollDetails.title} showBackButton showShareButton />
+      <Header
+        title={pollDetails.title}
+        showBackButton
+        showShareButton
+        onShare={handleCodeShare}
+      />
 
       {pollDetails._count?.participants > 0 ? (
         <VStack flex={1} px={5}>
