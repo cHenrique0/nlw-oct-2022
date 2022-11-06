@@ -10,29 +10,29 @@ interface GuessProps {
   gameId: string;
   createdAt: string;
   participantId: string;
-  firstTeamPoints: number;
-  secondTeamPoints: number;
+  homeTeamGoals: number;
+  awayTeamGoals: number;
 }
 
 export interface MatchProps {
   id: string;
   date: string;
-  firstTeamCountryIsoCode: string;
-  secondTeamCountryIsoCode: string;
+  homeTeamCountryIsoCode: string;
+  awayTeamCountryIsoCode: string;
   guess: null | GuessProps;
 }
 
 interface Props {
   data: MatchProps;
   onGuessConfirm: () => void;
-  setFirstTeamPoints: (value: string) => void;
-  setSecondTeamPoints: (value: string) => void;
+  setHomeTeamGoals: (value: string) => void;
+  setAwayTeamGoals: (value: string) => void;
 }
 
 export function Match({
   data,
-  setFirstTeamPoints,
-  setSecondTeamPoints,
+  setHomeTeamGoals,
+  setAwayTeamGoals,
   onGuessConfirm,
 }: Props) {
   const { colors, sizes } = useTheme();
@@ -51,8 +51,8 @@ export function Match({
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {getName(data.firstTeamCountryIsoCode)} vs.{" "}
-        {getName(data.secondTeamCountryIsoCode)}
+        {getName(data.homeTeamCountryIsoCode)} vs.{" "}
+        {getName(data.awayTeamCountryIsoCode)}
       </Text>
 
       <Text color="gray.200" fontSize="xs">
@@ -61,19 +61,19 @@ export function Match({
 
       <HStack mt={4} w="full" justifyContent="center" alignItems="center">
         <Team
-          code={data.firstTeamCountryIsoCode}
+          code={data.homeTeamCountryIsoCode}
           position="right"
-          onChangeText={setFirstTeamPoints}
-          value={data.guess?.firstTeamPoints.toString() || ""}
+          onChangeText={setHomeTeamGoals}
+          value={data.guess?.homeTeamGoals.toString() || ""}
         />
 
         <X color={colors.gray[300]} size={sizes[6]} />
 
         <Team
-          code={data.secondTeamCountryIsoCode}
+          code={data.awayTeamCountryIsoCode}
           position="left"
-          onChangeText={setSecondTeamPoints}
-          value={data.guess?.secondTeamPoints.toString() || ""}
+          onChangeText={setAwayTeamGoals}
+          value={data.guess?.awayTeamGoals.toString() || ""}
         />
       </HStack>
 

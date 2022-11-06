@@ -15,8 +15,8 @@ interface Props {
 export function Guesses({ pollId, code }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [matches, setMatches] = useState<MatchProps[]>([]);
-  const [firstTeamPoints, setFirstTeamPoints] = useState("");
-  const [secondTeamPoints, setSecondTeamPoints] = useState("");
+  const [homeTeamGoals, setHomeTeamGoals] = useState("");
+  const [awayTeamGoals, setAwayTeamGoals] = useState("");
 
   const toast = useToast();
 
@@ -41,7 +41,7 @@ export function Guesses({ pollId, code }: Props) {
 
   async function handleGuessConfirm(matchId: string) {
     try {
-      if (!firstTeamPoints.trim() || !secondTeamPoints.trim()) {
+      if (!homeTeamGoals.trim() || !awayTeamGoals.trim()) {
         return toast.show({
           title: "Informe o placar da partida.",
           placement: "top",
@@ -50,8 +50,8 @@ export function Guesses({ pollId, code }: Props) {
       }
 
       await api.post(`/polls/${pollId}/matches/${matchId}/guesses`, {
-        firstTeamPoints: Number(firstTeamPoints),
-        secondTeamPoints: Number(secondTeamPoints),
+        homeTeamGoals: Number(homeTeamGoals),
+        awayTeamGoals: Number(awayTeamGoals),
       });
 
       toast.show({
@@ -86,8 +86,8 @@ export function Guesses({ pollId, code }: Props) {
       renderItem={({ item }) => (
         <Match
           data={item}
-          setFirstTeamPoints={setFirstTeamPoints}
-          setSecondTeamPoints={setSecondTeamPoints}
+          setHomeTeamGoals={setHomeTeamGoals}
+          setAwayTeamGoals={setAwayTeamGoals}
           onGuessConfirm={() => handleGuessConfirm(item.id)}
         />
       )}
